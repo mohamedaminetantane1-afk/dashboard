@@ -348,7 +348,7 @@
       
       <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-20 shrink-0">
         <div>
-          <h2 class="text-2xl font-bold">Nouvelle Commande</h2>
+          <h2 id="modalTitle" class="text-2xl font-bold">Nouvelle Commande</h2>
           <p class="text-gray-500 text-sm font-medium">Remplissez les détails</p>
         </div>
         <button class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-200 active:scale-90 transition-all" onclick="toggleModal('orderModal', false)">
@@ -424,49 +424,124 @@
       </div>
       <div class="p-6 bg-white border-t border-gray-100 shrink-0">
         <button type="button" onclick="submitOrder()" class="w-full h-16 bg-app-green text-app-greenDark font-bold text-xl rounded-2xl flex items-center justify-center gap-3 active:scale-95 transition-transform shadow-lg shadow-app-green/30">
-          <i class="ph-bold ph-check-circle text-2xl"></i> Enregistrer
+          <i class="ph-bold ph-check-circle text-2xl"></i> <span id="submitBtnText">Enregistrer</span>
         </button>
       </div>
     </div>
   </div>
 
-  <script>
-    // --- 1. DATA (Initial Injection & LocalStorage) ---
-    const initialRawData = [["ORD-1002", "dounia", "06 24 92 21 31", "Fnidaq", 350.0, "livree", "vert", "01/11/2026"], ["ORD-1003", "yousfi sabrin", "07 08 89 87 93", "Berkan", 350.0, "livree", "vert", "01/11/2026"], ["ORD-1004", "asma", "06 22 05 63 35", "Tiznit", 350.0, "livree", "vert", "01/11/2026"], ["ORD-1005", "zineb", "06 50 85 09 88", "Safi", 350.0, "livree", "beige", "01/11/2026"], ["ORD-1006", "Hiba belhaj", "07 75 64 31 32", "Sale", 240.0, "livree", "Kimono noir", "01/11/2026"], ["ORD-1007", "Asmae benthami", "06 36 66 08 01", "Imzourne", 350.0, "livree", "Ensemble jaune", "01/11/2026"], ["ORD-1008", "Ibtissam", "06 73 40 35 39", "Rabat", 520.0, "livree", "Zigzag bleu roi", "01/11/2026"], ["ORD-1009", "Meryem", "06 25 03 12 49", "Salé", 350.0, "livree", "Ensemble beige", "15/04"], ["ORD-1010", "sofia", "06 44 00 01 45", "Casablanca", 350.0, "livree", "Ensemble vert", "16/04"], ["ORD-1011", "fatima ezzahra mazouzi", "212 6 15 95 50 58", "Khoribga", 350.0, "livree", "Ensemble vert", "16/04"], ["ORD-1012", "asmae bouzekraoui", "212 6 70 56 57 81", "Kasbet Tadla", 350.0, "livree", "Ensemble bleu", "17/04"], ["ORD-1013", "soukain saim", "212 7 16 86 88 60", "Tetouan", 300.0, "livree", "kimono beige", "18/04"], ["ORD-1014", "khadija", "212 6 10 44 74 99", "Casa", 240.0, "livree", "bimono bleu", "18/04"], ["ORD-1015", "Hiba belhaj", "07 75 64 31 32", "Sale", 300.0, "livree", "le lin qdim", "18/04"], ["ORD-1016", "sekkal hind", "212 6 60 99 48 04", "Rabat", 350.0, "livree", "Ensemble mauve", "19/04"], ["ORD-1017", "chaymae", "212 7 00 15 63 00", "Tanger", 700.0, "annulee", "Ensb:mauve+fus", "19/04"], ["ORD-1018", "Halima", "212 6 81 16 85 98", "Tanger", 240.0, "livree", "kimono bleu pétrole", "19/04"], ["ORD-1019", "chaymae", "212 6 51 24 14 45", "Casablanca", 350.0, "livree", "Ensemble bleu *", "20/04"], ["ORD-1020", "Hafsa", "212 6 15 74 49 48", "Salé", 350.0, "livree", "Ensemble beige", "20/04"], ["ORD-1021", "aya", "490428627", "Agadir", 260.0, "livree", "kimon beige", "20/04"], ["ORD-1022", "oumayma", "212 6 10 73 92 02", "Oujda", 350.0, "livree", "abaya dentelle", "21/04"], ["ORD-1023", "oumaima", "212 6 55 23 65 31", "Hoceima", 350.0, "annulee", "Ensemble jaune", "21/04"], ["ORD-1024", "layla", "212 6 11 75 92 36", "Agadir", 350.0, "annulee", "Ensemble bleu *", "21/04"], ["ORD-1025", "zineb elmdaghri", "212 6 39 53 36 39", "Nador", 350.0, "livree", "jupe beige", "21/04"], ["ORD-1026", "meriem lkharissi", "2120474456643", "Casablanca", 260.0, "livree", "kimono mkharbaq", "21/04"], ["ORD-1027", "iman", "212 6 53 55 72 08", "Nador", 750.0, "livree", "aby mar esb vert *", "22/04"], ["ORD-1028", "samia jbari", "samia jbari", "Tanger", 350.0, "livree", "ensemble bleu*", "22/04"], ["ORD-1029", "hajar", "212 6 06 57 89 19", "Marrakech", 540.0, "livree", "ki beige+ki noir", "22/04"], ["ORD-1030", "hanan", "212 6 23 56 71 84", "Temara", 350.0, "livree", "Ensemble beige*", "22/04"], ["ORD-1031", "meriem ouajd", "212 6 06 10 45 99", "Casablanca", 350.0, "livree", "ensemble vert*", "23/04"], ["ORD-1032", "karima", "212 7 77 35 14 15", "Rabat", 400.0, "annulee", "abaya 2PCs mauve claire", "23/04"], ["ORD-1033", "zineb grane", "212 6 31 45 64 05", "Sidi Yahya Gharbe", 240.0, "livree", "kimono bleu", "24/04"], ["ORD-1034", "Meryem", "06 25 03 12 49", "Sale", 870.0, "livree", "ensemble vert xxl+zigzag M", "24/04"], ["ORD-1035", "oumaima", "212 6 87 51 83 88", "Tanger", 350.0, "livree", "ensemble beige", "25/04"], ["ORD-1037", "hayat chairi", "212 6 73 46 59 23", "Fnidaq", 350.0, "livree", "ensemble fushia", "25/04"], ["ORD-1038", "manar doua", "212 6 41 83 45 62", "Fes", 350.0, "livree", "ensemble vert", "26/04"], ["ORD-1039", "mariam hansali", "212 6 53 28 16 71", "Semara", 350.0, "livree", "ensemble vert", "26/04"], ["ORD-1040", "aya", "212 6 51 14 98 26", "Agadir", 240.0, "livree", "kimono bleu jean", "27/04"], ["ORD-1041", "sara ouajd", "212 7 17 13 34 36", "Casablanca", 350.0, "livree", "ensemble vert :tehtani XXL foqani XL", "28/04"], ["ORD-1042", "oumaima", "212 6 52 10 72 82", "Mohemmadia", 520.0, "livree", "abaya zigzag bleu pétrole", "28/04"], ["ORD-1043", "hafsa bouhechlaf", "212 6 57 16 19 51", "Bengrir", 400.0, "livree", "abaya 2 PCS kaki", "28/04"], ["ORD-1044", "fatima ezzahra", "212 6 91 71 39 12", "Marrakech", 400.0, "livree", "abaya 2 PCS marron", "30/40"], ["ORD-1045", "nada", "212 6 64 04 13 72", "Tanger", 400.0, "livree", "abaya 2 PCS bleu pétrole", "01/05"], ["ORD-1046", "hafsa", "212 6 15 74 49 48", "Salé", 770.0, "livree", "ensemble noir/ensemble marron", "03/05"], ["ORD-1047", "youssra alachhab", "212 6 79 85 49 69", "Tanger", 350.0, "livree", "ensemble beige", "04/05"], ["ORD-1048", "nouhaila", "212 6 35 46 83 98", "Temara", 400.0, "livree", "abaya 2 PCS marron", "04/05"], ["ORD-1049", "hanan el merrouni", "212 6 28 76 79 08", "Tanger", 350.0, "livree", "ensemble mauve", "05/05"], ["ORD-1050", "saida", "212 7 12-18 71 35", "Oujda", 320.0, "livree", "robe noit", "06/05"], ["ORD-1051", "mouna gouram", "212 6 48 27 65 97", "Casablanca", 350.0, "livree", "ensemble vert", "06/05"], ["ORD-1052", "khattab ghita", "212 6 17 32 14 82", "Casablanca", 350.0, "livree", "ensemble bleu ciel", "06/05"], ["ORD-1053", "meryam sialiti", "212 6 56 87 26 67", "Nador Aroui", 350.0, "livree", "ensemble vert", "07/05"], ["ORD-1054", "oumayma faik", "212 6 60 06 11 85", "Agadir", 350.0, "livree", "abaya dentelle beige", "07/05"], ["ORD-1055", "khawla alioua", "212 7 79 32 55 15", "Casablanca", 650.0, "livree", "abaya dentelle beige+kimono le lin", "08/05"], ["ORD-1056", "hafsa", "212 6 15 74 49 48", "Sale", 840.0, "annulee", "2 Ensemble tunique bleu ciel jaune claire", "08/05"], ["ORD-1057", "asmaa benider", "212 7 06 82 26 80", "Casablanca", 350.0, "livree", "ensemble beige", "08/05"], ["ORD-1058", "khawla bengara", "212 6 75 77 40 02", "Casablanca", 240.0, "livree", "kimono noir", "09/05"], ["ORD-1059", "salim mariam", "212 6 00 94 01 27", "Tanger", 350.0, "livree", "ensemble fushia", "09/05"], ["ORD-1060", "fatima alainoug", "212 6 56 64 55 08", "Agadir", 300.0, "livree", "kimono le lin", "09/05"], ["ORD-1062", "hajar", "212 7 00 90 97 74", "Marrakech", 540.0, "retournee", "2 kimono=noire+le lin", "11/05"], ["ORD-1063", "Sarah tifor", "212 6 63 13 09 96", "Marrakech", 300.0, "livree", "kimono le lin", "12/05"], ["ORD-1064", "fati", "212 6 78 64 09 79", "Tanger", 300.0, "livree", "kimono le lin", "12/05"], ["ORD-1065", "rabab bono", "212 7 03 46 75 78", "Ksar Kbir", 240.0, "livree", "kimono bleu pétrole", "13/05"], ["ORD-1066", "mariam mansour", "212 6 72 30 00 25", "Marrakech", 520.0, "livree", "zigzag bleu pétrole", "15/05"], ["ORD-1067", "halima", "212 6 81 16 85 98", "Tanger", 300.0, "livree", "kimono le lin", "15/05"], ["ORD-1068", "chaimae", "212 7 66 07 18 00", "Hoceima", 350.0, "livree", "ensemble bleu ciel", "15/05"], ["ORD-1069", "souhail", "212 6 42 39 08 34", "Rabat", 590.0, "livree", "ensemble kaki kimono noir", "15/05"], ["ORD-1070", "siham", "212 6 15 80 94 17", "Bouznika", 420.0, "retournee", "ensemble tunique beige", "15/05"], ["ORD-1071", "nezha", "212 6 73 74 71 70", "Meknas", 260.0, "retournee", "kimono mkharbaq", "15/05"], ["ORD-1073", "soumaya ezzargani", "212 6 03 89 52 83", "Tanger", 350.0, "livree", "ensemble dentelle beige", "15/05"], ["ORD-1074", "hassna widady", "212 6 02 16 35 41", "Casablanca", 560.0, "livree", "kimono le lin+mkharbaq", "16/05"], ["ORD-1075", "oumaima", "212 6 55 23 65 31", "Hoceima", 870.0, "livree", " zigzag pétrole+ensemble beige", "16/05"], ["ORD-1076", "ratimezzahra bajji", "212 6 78 26 49 31", "Settet", 400.0, "livree", "abaya 2 PCS pétrole", "17/05"], ["ORD-1077", "ghita", "212 6 91 94 55 40", "Fes", 590.0, "livree", "kimono noir+ensemble bleu ciel", "18/05"], ["ORD-1078", "salsabil bouhot", "212 6 89 05 39 85", "Fnidaq", 350.0, "livree", "abaya dentelle beige", "19/05"], ["ORD-1079", "Ayman baei", "212 6 19 77 53 17", "Larache", 520.0, "livree", "zigzag marron", "19/05"], ["ORD-1080", "Malika", "212 6 89 36 85 88", "Bouskoura", 240.0, "livree", "kimono bleu jean", "19/05"], ["ORD-1081", "Hind", "212 6 11 07 30 19", "Casablanca", 350.0, "livree", "ensemble beige", "28/05"], ["ORD-1082", "Rabab maskaoui", "212 6 64 51 16 99", "Casablanca", 350.0, "livree", "ensemble beige", "28/05"], ["ORD-1083", "rabia allouchi", "212 7 17 80 30 34", "Khemissat", 700.0, "livree", "2 Ensembles noir+beige", "01/06"], ["ORD-1084", "meryem", "212 6 41 32 47 75", "Hoceima", 400.0, "livree", "abaya 2 PCS pétrole", "01/06"], ["ORD-1085", "hiba", "212 6 90 37 66 98", "Essaouira", 240.0, "livree", "kimono noir", "04/06"], ["ORD-1086", "hiba bemassoud", "212 7 62 20 43 31", "Tanger", 240.0, "livree", "kimono bleu jean", "07/06"], ["ORD-1087", "Rim bakkali", "212 7 19 17 02 90", "Assilah", 800.0, "livree", "abaya 2 PCS :mauve+pétrole", "09/06"], ["ORD-1088", "nawal", "212 6 60 02 07 90", "Tanger", 300.0, "livree", "kimono le lin", "11/06"], ["ORD-1089", "ikram lguijji", "212 6 24 67 28 39", "Casablanca", 350.0, "annulee", "ensemble bleu ciel", "11/06"], ["ORD-1090", "karima mohsin", "212 6 32 30 56 92", "Dakhla Ouad Dahab", 540.0, "livree", "2 kimono li lin+bleu jean", "15/06"], ["ORD-1091", "ghizlan benmoussa", " 212 6 35 83 00 91", "Rabat", 500.0, "livree", "2 kimonos mkharbaq+bleu jean", "17/06/2026:19/"], ["ORD-1092", "hajar seyoute", "212 6 62 06 76 38", "Bouznika", 250.0, "livree", "summer abaya", "19/06"], ["ORD-1093", "zahra nadif", "212 6 62 55 14 88", "Titmellil", 350.0, "livree", "ensemble bleu ciel", "26/06"], ["ORD-1095", "basma", "212 6 36 24 49 42", "Marrakech", 350.0, "livree", "ensemble le lin noir", "26/06"], ["ORD-1096", "fatima", "212 6 61 57 56 52", "Tanger", 350.0, "livree", "ensemble le lin beige", "27/06"], ["ORD-1097", "salma", "212 6 66 69 65 25", "Tanger", 350.0, "livree", "ensemble le lin beige", "27/06"], ["ORD-1098", "Ibtissam mazouz", "212 6 05 93 86 27", "Marrakech", 350.0, "livree", "ensemble le lin beige", "27/06"], ["ORD-1099", "khadija", "212 7 02 39 01 57", "Casablanca", 350.0, "livree", "ensemble le lin beige", "27/06"], ["ORD-1100", "nouhaila", "212 6 80 54 75 82", "Casablanca", 350.0, "livree", "ensemble le lin beige", "27/06"], ["ORD-1101", "Hiba mhaidi", "212 6 10 02 94 18", "Fès", 350.0, "livree", "ensemble le lin beige(1,37)", "28/06"], ["ORD-1102", "salma", "212 6 59 32 45 06", "Tanger", 260.0, "livree", "kimono mkharbaq", "03/07"], ["ORD-1103", "chaymae", "212 6 52 38 45 76", "Tanger", 350.0, "livree", "ensemble le lin beige", "03/07"], ["ORD-1104", "iman ihia", "212 7 70 49 01 01", "Casablanca", 350.0, "livree", "ensemble le lin beige", "03/07"], ["ORD-1105", "salma touzani", "212 6 41 70 78 28", "Rabat", 350.0, "livree", "ensemble bleu ciel", "04/07"], ["ORD-1106", "bouchra alazras", "212  6 42 16 39 35", "Kenitra", 240.0, "livree", "kimono bleu pétrole", "04/07"], ["ORD-1107", "maryzm", "212 6 13 33  64 70", "Casablanca", 350.0, "livree", "abaya 2 pièces beige", "04/07"], ["ORD-1110", "salma", "212 6 50 30 41 00", "Al Jadida", 350.0, "livree", "abaya dentelle beige", "05/07"], ["ORD-1111", "meryem", "212 659 64 78 58", "Ifran", 350.0, "livree", "abaya dentelle beige", "05/07"], ["ORD-1112", "fatima agour", "212 7 02 94 26 39", "Sale", 350.0, "livree", "ensemble le lin noir", "06/07"], ["ORD-1113", "fatima zahra", "212 6 11 47 95 96", "Salé", 540.0, "livree", "2 kimonos bleu jean+le lin", "06/07"], ["ORD-1114", "meriem benkhak", "212 6 97 93 65 82", "Marrakech", 350.0, "livree", "ensemble le lin noir", "11/07"], ["ORD-1115", "salma elmchachti", "212 6 65 24 19 76", "Bouskoura", 350.0, "livree", "ensemble crepe kaki", "11/07"], ["ORD-1116", "ikram", "212 7 65 39 03 38", "Asilah", 350.0, "livree", "abaya dentelle beige", "11/07"], ["ORD-1117", "Mohamed bouhjar", "212 6 49 59 12 44", "Qel3Et Megouna", 350.0, "livree", "ensemble le lin noir", "12/07"], ["ORD-1118", "aya el", "212 6 67 75 25 35", "Casablanca", 350.0, "livree", "ensemble crepe marron chocolat", "12/07"], ["ORD-1119", "chaymae", "212 6 02 94 98 88", "Oujda", 350.0, "retournee", "abaya dentelle move claire", "19/07"], ["ORD-1120", "hafssa errifi", "212 675 63 22 36", "Bouskoura", 700.0, "livree", "2 ensembles crêpe move+beige", "19/07"], ["ORD-1122", "Laila dadsi", "212 6 67 03 38 42", "El Jqdidq", 350.0, "livree", "abaya dentelle move", "26/07"], ["ORD-1123", "mariya", "212 6 84 93 41 49", "Marrakech", 380.0, "livree", "abaya 2 PCS zoom marron", "26/07"], ["ORD-1124", "sabrin el asri", "212 6 74 01 10 41", "Agadir", 620.0, "livree", "kimono noir+abaya 2 PCS zoom noeud", "26/07"], ["ORD-1125", "Hajiba kemichiu", "212 6 22 29 58 27", "Agadir", 590.0, "livree", "kimono move+ensemble le lin bleu ciel", "26/07"], ["ORD-1126", "mounia elyemlahi", "212 6 66 54 17 93", "Larach", 240.0, "annulee", "kimono rose bb", "27/07"], ["ORD-1127", "Aicha alamrani", "212 6 54 66 71 82", "Tetouan", 240.0, "livree", "kimono beige", "27/07"], ["ORD-1128", "Meriem elkhrissi", "212 7 4 45 66 43", "Casablanca", 380.0, "livree", "abaya 2 PCS zoom move", "28/07"], ["ORD-1129", "bouchra", "212 6 43 42 14 22", "Tetouan", 240.0, "retournee", "kimono noir", "29/07"], ["ORD-1130", "raja elqenoufi", "212 6 22 10 83 48", "Oulad Teima", 350.0, "livree", "abaya dentelle beige", "30/07"], ["ORD-1131", "sabah naji", "212 6 53 67 62 ", "Chefchaouen", 940.0, "livree", "Abaya zoom marron+2 kimono le lin/mkharbaq", "31/07"], ["ORD-1132", "houda bounher", "212 7 77 90 69 06", "Tanger", 350.0, "livree", "ensemble le lin rose", "31/07"], ["ORD-1133", "bouchra moujahid", "212 6 63 49 82 62", "Had Soualem", 260.0, "livree", "kimono mkharbaq", "02/08"], ["ORD-1134", "Nourlebbar", "212 6 16 84 98 98", "Sala Aljadida", 350.0, "annulee", "ensemble crepe kaki", "03/08"], ["ORD-1135", "ouiam", "212 6 96 18 93 46", "Agadir", 240.0, "retournee", "kimono noir", "03/08"], ["ORD-1137", "ahlam aidan", "212 7 75 05 11 12", "Zemamra", 540.0, "livree", "kimono transparent noir+kimono le lin", "04/08"], ["ORD-1138", "Nima adim", "212 6 29 17 73 69", "Yousdoufia", 380.0, "annulee", "abaya 2 pièces zoom ziti", "04/08"], ["ORD-1139", "nawal", "212 6 60 02 07 90", "Tanger", 350.0, "livree", "ensemble le lin marron", "04/08"], ["ORD-1140", "oumaima el harrak", "212 7 75 72 39 33", "Tanger", 350.0, "livree", "ensemble le lin bleu ciel", "04/08"], ["ORD-1141", "fadwa", "212 6 08 90 46 76", "Taza", 240.0, "livree", "kimono noir transparent", "04/08"], ["ORD-1142", "meryem", "212 6 49 19 86 26", "Casablanca", 240.0, "livree", "kimono transparent mauve", "05/08"], ["ORD-1143", "houda", "212 7 77 90 69 06", "Tanger", 350.0, "livree", "ensemble le lin marron", "05/08"], ["ORD-1144", "Aicha laasdibi", "212 6 43 33 85 57", "Oujda", 400.0, "retournee", "abaya 2 pièces bleu petrole", "05/08"], ["ORD-1145", "fatima", "212 6 05 18 32 15", "Chtouka Ayt Baha", 1140.0, "livree", "abaya zigzag marron+abaya zoum move+kimono bleu pétrole", "05/08"], ["ORD-1147", "Hiba bemassoud", "212 7 62 20 43 31", "Qsar Sghir", 240.0, "livree", "kimono transparent noir", "06/08"], ["ORD-1148", "latifa hafa", "212 6 98 21 18 94", "Guelmim", 240.0, "livree", "kimono trans move", "07/08"], ["ORD-1149", "basma", "212 6 22 81 83 50", "Fès", 590.0, "livree", "ensemble lin bleu+kimono jean", "08/08"], ["ORD-1150", "sabah", "212 6 53 67 62 24", "Chefchaouen", 1020.0, "livree", "abaya zoom move+zoom ziti+kimono mkharbaq", "09/08"], ["ORD-1151", "khadija", "212 6 42 07 67 96", "Casablanca", 380.0, "livree", "abaya zoom move", "09/08"], ["ORD-1152", "Hajar wazguidi", "212 7 76 29 38 46", "Skhirat", 350.0, "annulee", "abaya dentelle noir", "16/08"], ["ORD-1153", "Ikram", "212 6 22 74 40 50", "Tetouan", 240.0, "livree", "kimono bleu gean", "16/08"], ["ORD-1154", "Hamza", "212 6 48 93 33 35", "Sala Eljadida", 300.0, "livree", "kimono le lin", "18/09"], ["ORD-1155", "iman rezzouk", "212 6 19 64 36 86", "Casablanca", 240.0, "livree", "kimono noir transparent", "18/08"], ["ORD-1157", "ibrahim", "212 6 53 16 25 08", "Marrakech", 240.0, "livree", "kimono crepe noir", "18/08"], ["ORD-1158", "hala elbahja", "212 7 09 11 18 38", "Casablanca", 380.0, "livree", "abaya 2 pièces zoom nœud", "19/08"], ["ORD-1159", "Abir misbah", "212 6 32 33 86 34", "Casablanca", 240.0, "livree", "kimono transparent noir", "20/08"], ["ORD-1160", "Khalid", "212 6 61 99 32 88", "Tetouan", 620.0, "livree", "abaya zoom move+kimono move", "20/08"], ["ORD-1161", "Karima mohsin", "212 6 32 30 56 92", "Dakhla Oued Dahab", 240.0, "livree", "kimono crepe noir", "24/08"], ["ORD-1162", "bouchra", "212 6 16 03 17 55", "Casablanca", 400.0, "livree", "abaya 2 pièces bleu pétrole", "26/08"], ["ORD-1163", "iman", "212 6 36 49 20 05", "Fes", 240.0, "livree", "kimono crepe noir", "26/08"], ["ORD-1164", "Bouchra", "212 6 16 03 17 55", "Casablanca", 400.0, "livree", "abaya 2 pièces mauve", "28/08"], ["ORD-1165", "niima khaled", "212 6 19 92 78 04", "Casablanca", 240.0, "livree", "kimono pleu pétrole", "29/08"], ["ORD-1166", "salma lmahdi", "212 6 04 68 48 49", "Saidia", 400.0, "annulee", "abaya 2 pièces noir", "30/08"], ["ORD-1167", "meriem", "212 6 78 75 79 23", "Inzegan", 350.0, "livree", "ensemble le lin bleu ciel", "31/08"], ["ORD-1168", "niima", "212 6 19 92 78 04", "Casablanca", 520.0, "livree", "abaya zigzag vert", "07/09"], ["ORD-1169", "meryem bouyzouran", "212 629 51 70 52", "Casablanca", 380.0, "annulee", "abaya zoum marron", "07/09"], ["ORD-1170", "Aya khabane", "212 6 76 11 16 59", "Casablanca", 400.0, "livree", "abaya 2 pièces bleu pétrole", "10/09"], ["ORD-1171", "hiba", "212 7 62 20 43 31", "Tanger", 560.0, "livree", "kimono le lin+mkharbaq", "10/09"], ["ORD-1172", "sanae", "212 6 07 84 26 08", "Fkih Ben Salah", 240.0, "livree", "kimono noir", "11/09"], ["ORD-1173", "Nacima", "212 6 54 23 22 01", "Oujda", 350.0, "livree", "ensemble le lin noir", "11/09"], ["ORD-1174", "farah elmaimouni", "212 6 00 39 18 28", "Ouazzane", 350.0, "livree", "ensemble le lin rose bb", "12/09"], ["ORD-1175", "zakia", "212 6 98 77 87 68", "Mouhemmadia", 350.0, "livree", "ensemble crepe marron", "12/09"], ["ORD-1176", "meryem", "212 6 13 33 64 70", "Casablanca", 350.0, "annulee", "ensemble le lin marron", "13/09"], ["ORD-1177", "Hajar", "212 6 60 61 64 47", "Casablanca", 1010.0, "livree", "ensemble le lin(marron.jaune.ciel),zig(vert.petrol)", "16/09"], ["ORD-1178", "Mariem", "212 7 23 42 77 51", "Rabat", 270.0, "livree", "kimono noir(abaya)", "16/09"], ["ORD-1179", "sabrin fariji", "212 6 61 33 09 76", "Sale", 520.0, "livree", "abaya zigzag marron", "18/09"], ["ORD-1180", "nawal berrada", "212 6 61 41 61 70", "Casablanca", 900.0, "livree", "3 abayas koria move+marron+petrole", "19/09"], ["ORD-1181", "douae el yemlahi", "212 7 05 69 41 19", "Rabat", 270.0, "annulee", "scuba noir", "20/09"], ["ORD-1182", "safae", "212 6 77 14 43 71", "Sala Aljadida", 400.0, "livree", "abaya 2 pièces marron", "23/09"], ["ORD-1184", "nour laabar", "212 6 16 84 98 98", "Ifran", 400.0, "livree", "Abaya 2 pièces marron", "22/09"], ["ORD-1185", "youssra", "212 6 79 85 49", "Tanger", 520.0, "livree", "Abaya zigzag marron claire", "23/09"], ["ORD-1186", "Hiba", "212 6 96 92 69 08", "Boujdor", 350.0, "retournee", "ensemble le lin fushia", "25/09"], ["ORD-1187", "Assia", "212 6 54 71 64 93", "Agadir", 350.0, "livree", "Abaya dentelle noir", "25/09"], ["ORD-1188", "karima", "212 6 32 30 56 92", "Dakhla Oued Dahab", 0.0, "livree", "kimono mkharbaq +ensemble crepe marron", "27/09"], ["ORD-1189", "oumayma", "212 6 21 98 12 08", "Salé", 640.0, "annulee", "koria vert kaki+Marron", "29/09"], ["ORD-1190", "Meryem mouhmouh", "212 6 54 42 60 03", "Agadir", 280.0, "annulee", "kimono noir mcharet", "04/10"], ["ORD-1191", "fatimazzahra", "212 6 91 71 39 12", "Marrakech", 400.0, "annulee", "Abaya 2 pièces move claire", "06/10"], ["ORD-1192", "Abir", "212 6 34 88 94 05", "Agadir", 350.0, "livree", "ensemble le lin marron", "07/10"], ["ORD-1193", "meriem", "212 7 23 42 77 51", "Rabat", 550.0, "livree", "kimono marron+noir mcharet", "15/10"], ["ORD-1194", "ilham", "212 6 61 26 40 02", "Tit Pellil", 1200.0, "livree", "2 abaya 2 pièces noir+abaya bleu petrol", "01/11/2026"], ["ORD-1195", "dounia badaoui", "212 7 07 01 37 55", "Nador", 400.0, "retournee", "abaya 2 pièces noir", "21/10"], ["ORD-1196", "hafsa laamrani", "212 7 81 67 30 05", "Marrakech", 400.0, "livree", "abaya 2 pièces bleu pétrole", "21/10"], ["ORD-1197", "hanaa", "212 6 95 02 88 08", "Casablanca", 400.0, "livree", "abaya 2 pièces bleu pétrole", "22/10"], ["ORD-1198", "meryem jaloul", "212 6 17 93 46 88", "Marrakech", 320.0, "livree", "abaya koria marron", "22/10"], ["ORD-1199", "Mina", "212 6 22 22 77 74", "Dakhla", 350.0, "livree", "abaya dentelle mauve 1.55", "23/10"], ["ORD-1200", "Hajar", "212 6 39 55 99 09", "Larach", 400.0, "livree", "abaya 2 pièces mauve fonçait", "24/10"], ["ORD-1201", "Mme nadia", "212 6 74 31 55 87", "Rabat", 520.0, "livree", "abaya zigzag pleu pétrole", "25/10"], ["ORD-1202", "chaimaa", "212 6 39 46 14 11", "Meknès", 400.0, "livree", "abaya 2 pièces kaki", "25/10"], ["ORD-1203", "nouhaila nadri", "212 6 90 20 34 01", "Mouhemmadia", 260.0, "livree", "kimono mcharet", "28/10"], ["ORD-1204", "najlae", "212 6 33 58 4696", "Tanger", 390.0, "en_cours", "sous abaya crepe +kimono mcharet noir", "31/10"], ["ORD-1205", "Asma", "212 6 66 09 09 00", "Casablanca", 600.0, "en_cours", "2 kimono manteau (noir/gris)", "01/11"], ["ORD-1206", "fatima", "212 6 44 66 06 15", "Marrakech", 300.0, "en_cours", "kimono manteau gris", "01/11"], ["ORD-1207", "elmaadioui mohamed", "212 6 55 67 83 04", "Imzouren", 600.0, "en_cours", "2 kimono manteau (noir/gris)", "01/11"]];
+  <!-- ========================================== -->
+  <!-- MODAL: DELETE CONFIRMATION -->
+  <!-- ========================================== -->
+  <div id="deleteModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="toggleModal('deleteModal', false)"></div>
+    <div class="bg-white w-full max-w-sm rounded-[32px] p-6 shadow-2xl relative z-10 text-center">
+      <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="ph-bold ph-trash text-3xl"></i>
+      </div>
+      <h3 class="text-xl font-bold text-gray-900 mb-2">Êtes-vous sûr ?</h3>
+      <p class="text-sm text-gray-500 mb-6">Cette commande sera supprimée définitivement.</p>
+      <div class="flex gap-3">
+        <button onclick="toggleModal('deleteModal', false)" class="flex-1 py-3 bg-gray-100 text-gray-700 font-bold rounded-2xl active:scale-95 transition-transform">Annuler</button>
+        <button onclick="confirmDeleteOrder()" class="flex-1 py-3 bg-red-500 text-white font-bold rounded-2xl active:scale-95 transition-transform shadow-lg shadow-red-500/30">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, collection, onSnapshot, addDoc, updateDoc, deleteDoc, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Expose functions to window for HTML inline event handlers
+    window.switchTab = switchTab;
+    window.toggleModal = toggleModal;
+    window.updateOrderStatus = updateOrderStatus;
+    window.submitOrder = submitOrder;
+    window.renderOrdersList = renderOrdersList;
+    window.openEditModal = openEditModal;
+    window.promptDeleteOrder = promptDeleteOrder;
+    window.confirmDeleteOrder = confirmDeleteOrder;
+
+    // --- 1. DATA (Initial Seeding Array) ---
+    const initialRawData = [["dounia", "06 24 92 21 31", "Fnidaq", 350.0, "livree", "vert", "XXL", "01/11/2026"], ["yousfi sabrin", "07 08 89 87 93", "Berkan", 350.0, "livree", "vert", "XL", "01/11/2026"], ["asma", "06 22 05 63 35", "Tiznit", 350.0, "livree", "vert", "M", "01/11/2026"], ["zineb", "06 50 85 09 88", "Safi", 350.0, "livree", "beige", "M", "01/11/2026"], ["Hiba belhaj", "07 75 64 31 32", "Sale", 240.0, "livree", "Kimono noir", "XL", "01/11/2026"], ["Asmae benthami", "06 36 66 08 01", "Imzourne", 350.0, "livree", "Ensemble jaune", "L", "01/11/2026"], ["Ibtissam", "06 73 40 35 39", "Rabat", 520.0, "livree", "Zigzag bleu roi", "XL", "01/11/2026"], ["Meryem", "06 25 03 12 49", "Salé", 350.0, "livree", "Ensemble beige", "M", "2026-04-15 00:00:00"], ["sofia", "06 44 00 01 45", "Casablanca", 350.0, "livree", "Ensemble vert", "XL", "2026-04-16 00:00:00"], ["fatima ezzahra mazouzi", "212 6 15 95 50 58", "Khoribga", 350.0, "livree", "Ensemble vert", "L", "2026-04-16 00:00:00"], ["asmae bouzekraoui", "212 6 70 56 57 81", "Kasbet Tadla", 350.0, "livree", "Ensemble bleu", "XL", "2026-04-17 00:00:00"], ["soukain saim", "212 7 16 86 88 60", "Tetouan", 300.0, "livree", "kimono beige", "M", "2026-04-18 00:00:00"], ["khadija", "212 6 10 44 74 99", "Casa", 240.0, "livree", "bimono bleu", "XXL", "2026-04-18 00:00:00"], ["Hiba belhaj", "07 75 64 31 32", "Sale", 300.0, "livree", "le lin qdim", "XL", "2026-04-18 00:00:00"], ["sekkal hind", "212 6 60 99 48 04", "Rabat", 350.0, "livree", "Ensemble mauve", "XXL", "2026-04-19 00:00:00"], ["chaymae", "212 7 00 15 63 00", "Tanger", 700.0, "annulee", "Ensb:mauve+fus", "XL", "2026-04-19 00:00:00"], ["Halima", "212 6 81 16 85 98", "Tanger", 240.0, "livree", "kimono bleu pétrole", "XL", "2026-04-19 00:00:00"], ["chaymae", "212 6 51 24 14 45", "Casablanca", 350.0, "livree", "Ensemble bleu *", "M", "2026-04-20 00:00:00"], ["Hafsa", "212 6 15 74 49 48", "Salé", 350.0, "livree", "Ensemble beige", "M", "2026-04-20 00:00:00"], ["aya", "490428627", "Agadir", 260.0, "livree", "kimon beige", "M", "2026-04-20 00:00:00"], ["oumayma", "212 6 10 73 92 02", "Oujda", 350.0, "livree", "abaya dentelle", "L", "2026-04-21 00:00:00"], ["oumaima", "212 6 55 23 65 31", "Hoceima", 350.0, "annulee", "Ensemble jaune", "XL", "2026-04-21 00:00:00"], ["layla", "212 6 11 75 92 36", "Agadir", 350.0, "annulee", "Ensemble bleu *", "XL", "2026-04-21 00:00:00"], ["zineb elmdaghri", "212 6 39 53 36 39", "Nador", 350.0, "livree", "jupe beige", "XL", "2026-04-21 00:00:00"], ["meriem lkharissi", "2120474456643", "Casablanca", 260.0, "livree", "kimono mkharbaq", "XL", "2026-04-21 00:00:00"], ["iman", "212 6 53 55 72 08", "Nador", 750.0, "livree", "aby mar esb vert *", "XXL", "2026-04-22 00:00:00"], ["samia jbari", "samia jbari", "Tanger", 350.0, "livree", "ensemble bleu*", "L", "2026-04-22 00:00:00"], ["hajar", "212 6 06 57 89 19", "Marrakech", 540.0, "livree", "ki beige+ki noir", "M", "2026-04-22 00:00:00"], ["hanan", "212 6 23 56 71 84", "Temara", 350.0, "livree", "Ensemble beige*", "XXL", "2026-04-22 00:00:00"], ["meriem ouajd", "212 6 06 10 45 99", "Casablanca", 350.0, "livree", "ensemble vert*", "XL", "2026-04-23 00:00:00"], ["karima", "212 7 77 35 14 15", "Rabat", 400.0, "annulee", "abaya 2PCs mauve claire", "L", "2026-04-23 00:00:00"], ["zineb grane", "212 6 31 45 64 05", "Sidi Yahya Gharbe", 240.0, "livree", "kimono bleu", "M", "2026-04-24 00:00:00"], ["Meryem", "06 25 03 12 49", "Sale", 870.0, "livree", "ensemble vert xxl+zigzag M", "XXL/M", "2026-04-24 00:00:00"], ["oumaima", "212 6 87 51 83 88", "Tanger", 350.0, "livree", "ensemble beige", "XXL", "2026-04-25 00:00:00"], ["hayat chairi", "212 6 73 46 59 23", "Fnidaq", 350.0, "livree", "ensemble fushia", "L", "2026-04-25 00:00:00"], ["manar doua", "212 6 41 83 45 62", "Fes", 350.0, "livree", "ensemble vert", "XL", "2026-04-26 00:00:00"], ["mariam hansali", "212 6 53 28 16 71", "Semara", 350.0, "livree", "ensemble vert", "M", "2026-04-26 00:00:00"], ["aya", "212 6 51 14 98 26", "Agadir", 240.0, "livree", "kimono bleu jean", "M", "2026-04-27 00:00:00"], ["sara ouajd", "212 7 17 13 34 36", "Casablanca", 350.0, "livree", "ensemble vert :tehtani XXL foqani XL", "XXL/XL", "2026-04-28 00:00:00"], ["oumaima", "212 6 52 10 72 82", "Mohemmadia", 520.0, "livree", "abaya zigzag bleu pétrole", "M", "2026-04-28 00:00:00"], ["hafsa bouhechlaf", "212 6 57 16 19 51", "Bengrir", 400.0, "livree", "abaya 2 PCS kaki", "L", "2026-04-28 00:00:00"], ["fatima ezzahra", "212 6 91 71 39 12", "Marrakech", 400.0, "livree", "abaya 2 PCS marron", "XL", "30/40"], ["nada", "212 6 64 04 13 72", "Tanger", 400.0, "livree", "abaya 2 PCS bleu pétrole", "S", "2026-05-01 00:00:00"], ["hafsa", "212 6 15 74 49 48", "Salé", 770.0, "livree", "ensemble noir/ensemble marron", "M", "2026-05-03 00:00:00"], ["youssra alachhab", "212 6 79 85 49 69", "Tanger", 350.0, "livree", "ensemble beige", "XL", "2026-05-04 00:00:00"], ["nouhaila", "212 6 35 46 83 98", "Temara", 400.0, "livree", "abaya 2 PCS marron", "XXL", "2026-05-04 00:00:00"], ["hanan el merrouni", "212 6 28 76 79 08", "Tanger", 350.0, "livree", "ensemble mauve", "XL", "2026-05-05 00:00:00"], ["saida", "212 7 12-18 71 35", "Oujda", 320.0, "livree", "robe noit", "S", "2026-05-06 00:00:00"], ["mouna gouram", "212 6 48 27 65 97", "Casablanca", 350.0, "livree", "ensemble vert", "S", "2026-05-06 00:00:00"], ["khattab ghita", "212 6 17 32 14 82", "Casablanca", 350.0, "livree", "ensemble bleu ciel", "M", "2026-05-06 00:00:00"], ["meryam sialiti", "212 6 56 87 26 67", "Nador Aroui", 350.0, "livree", "ensemble vert", "XXL", "2026-05-07 00:00:00"], ["oumayma faik", "212 6 60 06 11 85", "Agadir", 350.0, "livree", "abaya dentelle beige", "L", "2026-05-07 00:00:00"], ["khawla alioua", "212 7 79 32 55 15", "Casablanca", 650.0, "livree", "abaya dentelle beige+kimono le lin", "M", "2026-05-08 00:00:00"], ["hafsa", "212 6 15 74 49 48", "Sale", 840.0, "annulee", "2 Ensemble tunique bleu ciel jaune claire", "M", "2026-05-08 00:00:00"], ["Client Inconnu", "212 6 10 64 20 02", "Temara", 540.0, "livree", "2 kimono bleu jean+le lin", "L", "2026-05-08 00:00:00"], ["asmaa benider", "212 7 06 82 26 80", "Casablanca", 350.0, "livree", "ensemble beige", "S", "2026-05-08 00:00:00"], ["khawla bengara", "212 6 75 77 40 02", "Casablanca", 240.0, "livree", "kimono noir", "L", "2026-05-09 00:00:00"], ["salim mariam", "212 6 00 94 01 27", "Tanger", 350.0, "livree", "ensemble fushia", "XL", "2026-05-09 00:00:00"], ["fatima alainoug", "212 6 56 64 55 08", "Agadir", 300.0, "livree", "kimono le lin", "XXL", "2026-05-09 00:00:00"], ["Client Inconnu", "212 7 00 62 24 69", "Azemour", 400.0, "livree", "abaya 2 PCS marron", "XXL", "2026-05-10 00:00:00"], ["hajar", "212 7 00 90 97 74", "Marrakech", 540.0, "retournee", "2 kimono=noire+le lin", "L", "2026-05-11 00:00:00"], ["Sarah tifor", "212 6 63 13 09 96", "Marrakech", 300.0, "livree", "kimono le lin", "L", "2026-05-12 00:00:00"], ["fati", "212 6 78 64 09 79", "Tanger", 300.0, "livree", "kimono le lin", "L", "2026-05-12 00:00:00"], ["rabab bono", "212 7 03 46 75 78", "Ksar Kbir", 240.0, "livree", "kimono bleu pétrole", "L", "2026-05-13 00:00:00"], ["mariam mansour", "212 6 72 30 00 25", "Marrakech", 520.0, "livree", "zigzag bleu pétrole", "S", "2026-05-15 00:00:00"], ["halima", "212 6 81 16 85 98", "Tanger", 300.0, "livree", "kimono le lin", "XL", "2026-05-15 00:00:00"], ["chaimae", "212 7 66 07 18 00", "Hoceima", 350.0, "livree", "ensemble bleu ciel", "S", "2026-05-15 00:00:00"], ["souhail", "212 6 42 39 08 34", "Rabat", 590.0, "livree", "ensemble kaki kimono noir", "M", "2026-05-15 00:00:00"], ["siham", "212 6 15 80 94 17", "Bouznika", 420.0, "retournee", "ensemble tunique beige", "M", "2026-05-15 00:00:00"], ["nezha", "212 6 73 74 71 70", "Meknas", 260.0, "retournee", "kimono mkharbaq", "XL", "2026-05-15 00:00:00"], ["soumaya ezzargani", "212 6 03 89 52 83", "Tanger", 350.0, "livree", "ensemble dentelle beige", "S", "2026-05-15 00:00:00"], ["hassna widady", "212 6 02 16 35 41", "Casablanca", 560.0, "livree", "kimono le lin+mkharbaq", "XXL", "2026-05-16 00:00:00"], ["oumaima", "212 6 55 23 65 31", "Hoceima", 870.0, "livree", "zigzag pétrole+ensemble beige", "XL", "2026-05-16 00:00:00"], ["ratimezzahra bajji", "212 6 78 26 49 31", "Settet", 400.0, "livree", "abaya 2 PCS pétrole", "XL", "2026-05-17 00:00:00"], ["ghita", "212 6 91 94 55 40", "Fes", 590.0, "livree", "kimono noir+ensemble bleu ciel", "XL / M", "2026-05-18 00:00:00"], ["salsabil bouhot", "212 6 89 05 39 85", "Fnidaq", 350.0, "livree", "abaya dentelle beige", "XL", "2026-05-19 00:00:00"], ["Ayman baei", "212 6 19 77 53 17", "Larache", 520.0, "livree", "zigzag marron", "L", "2026-05-19 00:00:00"], ["Malika", "212 6 89 36 85 88", "Bouskoura", 240.0, "livree", "kimono bleu jean", "XL", "2026-05-19 00:00:00"], ["Hind", "212 6 11 07 30 19", "Casablanca", 350.0, "livree", "ensemble beige", "XXL", "2026-05-28 00:00:00"], ["Rabab maskaoui", "212 6 64 51 16 99", "Casablanca", 350.0, "livree", "ensemble beige", "XL", "2026-05-28 00:00:00"], ["rabia allouchi", "212 7 17 80 30 34", "Khemissat", 700.0, "livree", "2 Ensembles noir+beige", "L", "2026-06-01 00:00:00"], ["meryem", "212 6 41 32 47 75", "Hoceima", 400.0, "livree", "abaya 2 PCS pétrole", "M", "2026-06-01 00:00:00"], ["hiba", "212 6 90 37 66 98", "Essaouira", 240.0, "livree", "kimono noir", "M", "2026-06-04 00:00:00"], ["hiba bemassoud", "212 7 62 20 43 31", "Tanger", 240.0, "livree", "kimono bleu jean", "L", "2026-06-07 00:00:00"], ["Rim bakkali", "212 7 19 17 02 90", "Assilah", 800.0, "livree", "abaya 2 PCS :mauve+pétrole", "XL", "2026-06-09 00:00:00"], ["nawal", "212 6 60 02 07 90", "Tanger", 300.0, "livree", "kimono le lin", "L", "2026-06-11 00:00:00"], ["ikram lguijji", "212 6 24 67 28 39", "Casablanca", 350.0, "annulee", "ensemble bleu ciel", "S", "2026-06-11 00:00:00"], ["karima mohsin", "212 6 32 30 56 92", "Dakhla Ouad Dahab", 540.0, "livree", "2 kimono li lin+bleu jean", "XL", "2026-06-15 00:00:00"], ["ghizlan benmoussa", "212 6 35 83 00 91", "Rabat", 500.0, "livree", "2 kimonos mkharbaq+bleu jean", "L", "17/06/2026:19/06"], ["hajar seyoute", "212 6 62 06 76 38", "Bouznika", 250.0, "livree", "summer abaya", "XL", "2026-06-19 00:00:00"], ["zahra nadif", "212 6 62 55 14 88", "Titmellil", 350.0, "livree", "ensemble bleu ciel", "M", "2026-06-26 00:00:00"], ["Client Inconnu", "212 7 12 54 40 73", "Tanger", 300.0, "livree", "kimono le lin", "L", "2026-06-26 00:00:00"], ["basma", "212 6 36 24 49 42", "Marrakech", 350.0, "livree", "ensemble le lin noir", "M", "2026-06-26 00:00:00"], ["fatima", "212 6 61 57 56 52", "Tanger", 350.0, "livree", "ensemble le lin beige", "L", "2026-06-27 00:00:00"], ["salma", "212 6 66 69 65 25", "Tanger", 350.0, "livree", "ensemble le lin beige", "L", "2026-06-27 00:00:00"], ["Ibtissam mazouz", "212 6 05 93 86 27", "Marrakech", 350.0, "livree", "ensemble le lin beige", "L", "2026-06-27 00:00:00"], ["khadija", "212 7 02 39 01 57", "Casablanca", 350.0, "livree", "ensemble le lin beige", "XXL", "2026-06-27 00:00:00"], ["nouhaila", "212 6 80 54 75 82", "Casablanca", 350.0, "livree", "ensemble le lin beige", "XL", "2026-06-27 00:00:00"], ["Hiba mhaidi", "212 6 10 02 94 18", "Fès", 350.0, "livree", "ensemble le lin beige(1,37)", "S", "2026-06-28 00:00:00"], ["salma", "212 6 59 32 45 06", "Tanger", 260.0, "livree", "kimono mkharbaq", "M", "2026-07-03 00:00:00"], ["chaymae", "212 6 52 38 45 76", "Tanger", 350.0, "livree", "ensemble le lin beige", "M", "2026-07-03 00:00:00"], ["iman ihia", "212 7 70 49 01 01", "Casablanca", 350.0, "livree", "ensemble le lin beige", "M", "2026-07-03 00:00:00"], ["salma touzani", "212 6 41 70 78 28", "Rabat", 350.0, "livree", "ensemble bleu ciel", "S", "2026-07-04 00:00:00"], ["bouchra alazras", "212  6 42 16 39 35", "Kenitra", 240.0, "livree", "kimono bleu pétrole", "M", "2026-07-04 00:00:00"], ["maryzm", "212 6 13 33  64 70", "Casablanca", 350.0, "livree", "abaya 2 pièces beige", "L", "2026-07-04 00:00:00"], ["salma", "212 6 50 30 41 00", "Al Jadida", 350.0, "livree", "abaya dentelle beige", "S", "2026-07-05 00:00:00"], ["meryem", "212 659 64 78 58", "Ifran", 350.0, "livree", "abaya dentelle beige", "M", "2026-07-05 00:00:00"], ["fatima agour", "212 7 02 94 26 39", "Sale", 350.0, "livree", "ensemble le lin noir", "XXL", "2026-07-06 00:00:00"], ["fatima zahra", "212 6 11 47 95 96", "Salé", 540.0, "livree", "2 kimonos bleu jean+le lin", "XL", "2026-07-06 00:00:00"], ["meriem benkhak", "212 6 97 93 65 82", "Marrakech", 350.0, "livree", "ensemble le lin noir", "XL", "2026-07-11 00:00:00"], ["salma elmchachti", "212 6 65 24 19 76", "Bouskoura", 350.0, "livree", "ensemble crepe kaki", "M", "2026-07-11 00:00:00"], ["ikram", "212 7 65 39 03 38", "Asilah", 350.0, "livree", "abaya dentelle beige", "M", "2026-07-11 00:00:00"], ["Mohamed bouhjar", "212 6 49 59 12 44", "Qel3Et Megouna", 350.0, "livree", "ensemble le lin noir", "XL", "2026-07-12 00:00:00"], ["aya el", "212 6 67 75 25 35", "Casablanca", 350.0, "livree", "ensemble crepe marron chocolat", "M", "2026-07-12 00:00:00"], ["chaymae", "212 6 02 94 98 88", "Oujda", 350.0, "retournee", "abaya dentelle move claire", "XL", "2026-07-19 00:00:00"], ["hafssa errifi", "212 675 63 22 36", "Bouskoura", 700.0, "livree", "2 ensembles crêpe move+beige", "L", "2026-07-19 00:00:00"], ["Client Inconnu", "212 6 67 22 41 63", "Tanger", 350.0, "livree", "ensemble le lin move", "XXL", "2026-07-20 00:00:00"], ["Laila dadsi", "212 6 67 03 38 42", "El Jqdidq", 350.0, "livree", "abaya dentelle move", "XL", "2026-07-26 00:00:00"], ["mariya", "212 6 84 93 41 49", "Marrakech", 380.0, "livree", "abaya 2 PCS zoom marron", "S", "2026-07-26 00:00:00"], ["sabrin el asri", "212 6 74 01 10 41", "Agadir", 620.0, "livree", "kimono noir+abaya 2 PCS zoom noeud", "XL", "2026-07-26 00:00:00"], ["Hajiba kemichiu", "212 6 22 29 58 27", "Agadir", 590.0, "livree", "kimono move+ensemble le lin bleu ciel", "M", "2026-07-26 00:00:00"], ["mounia elyemlahi", "212 6 66 54 17 93", "Larach", 240.0, "annulee", "kimono rose bb", "M", "2026-07-27 00:00:00"], ["Aicha alamrani", "212 6 54 66 71 82", "Tetouan", 240.0, "livree", "kimono beige", "M", "2026-07-27 00:00:00"], ["Meriem elkhrissi", "212 7 4 45 66 43", "Casablanca", 380.0, "livree", "abaya 2 PCS zoom move", "XL", "2026-07-28 00:00:00"], ["bouchra", "212 6 43 42 14 22", "Tetouan", 240.0, "retournee", "kimono noir", "", "2026-07-29 00:00:00"], ["raja elqenoufi", "212 6 22 10 83 48", "Oulad Teima", 350.0, "livree", "abaya dentelle beige", "L", "2026-07-30 00:00:00"], ["sabah naji", "212 6 53 67 62", "Chefchaouen", 940.0, "livree", "Abaya zoom marron+2 kimono le lin/mkharbaq", "M", "2026-07-31 00:00:00"], ["houda bounher", "212 7 77 90 69 06", "Tanger", 350.0, "livree", "ensemble le lin rose", "XXL", "2026-07-31 00:00:00"], ["bouchra moujahid", "212 6 63 49 82 62", "Had Soualem", 260.0, "livree", "kimono mkharbaq", "XL", "2026-08-02 00:00:00"], ["Nourlebbar", "212 6 16 84 98 98", "Sala Aljadida", 350.0, "annulee", "ensemble crepe kaki", "M", "2026-08-03 00:00:00"], ["ouiam", "212 6 96 18 93 46", "Agadir", 240.0, "retournee", "kimono noir", "L", "2026-08-03 00:00:00"], ["Client Inconnu", "212 6 89 36 85 88", "Bouskoura", 270.0, "livree", "kimono abaya bleu pétrole", "XXL", "2026-08-04 00:00:00"], ["ahlam aidan", "212 7 75 05 11 12", "Zemamra", 540.0, "livree", "kimono transparent noir+kimono le lin", "M", "2026-08-04 00:00:00"], ["Nima adim", "212 6 29 17 73 69", "Yousdoufia", 380.0, "annulee", "abaya 2 pièces zoom ziti", "XL", "2026-08-04 00:00:00"], ["nawal", "212 6 60 02 07 90", "Tanger", 350.0, "livree", "ensemble le lin marron", "L", "2026-08-04 00:00:00"], ["oumaima el harrak", "212 7 75 72 39 33", "Tanger", 350.0, "livree", "ensemble le lin bleu ciel", "L", "2026-08-04 00:00:00"], ["fadwa", "212 6 08 90 46 76", "Taza", 240.0, "livree", "kimono noir transparent", "L", "2026-08-04 00:00:00"], ["meryem", "212 6 49 19 86 26", "Casablanca", 240.0, "livree", "kimono transparent mauve", "XL", "2026-08-05 00:00:00"], ["houda", "212 7 77 90 69 06", "Tanger", 350.0, "livree", "ensemble le lin marron", "XL", "2026-08-05 00:00:00"], ["Aicha laasdibi", "212 6 43 33 85 57", "Oujda", 400.0, "retournee", "abaya 2 pièces bleu petrole", "XL", "2026-08-05 00:00:00"], ["fatima", "212 6 05 18 32 15", "Chtouka Ayt Baha", 1140.0, "livree", "abaya zigzag marron+abaya zoum move+kimono bleu pétrole", "S", "2026-08-05 00:00:00"], ["Hiba bemassoud", "212 7 62 20 43 31", "Qsar Sghir", 240.0, "livree", "kimono transparent noir", "L", "2026-08-06 00:00:00"], ["latifa hafa", "212 6 98 21 18 94", "Guelmim", 240.0, "livree", "kimono trans move", "L", "2026-08-07 00:00:00"], ["basma", "212 6 22 81 83 50", "Fès", 590.0, "livree", "ensemble lin bleu+kimono jean", "M", "2026-08-08 00:00:00"], ["sabah", "212 6 53 67 62 24", "Chefchaouen", 1020.0, "livree", "abaya zoom move+zoom ziti+kimono mkharbaq", "M/L/M", "2026-08-09 00:00:00"], ["khadija", "212 6 42 07 67 96", "Casablanca", 380.0, "livree", "abaya zoom move", "S", "2026-08-09 00:00:00"], ["Hajar wazguidi", "212 7 76 29 38 46", "Skhirat", 350.0, "annulee", "abaya dentelle noir", "XXL", "2026-08-16 00:00:00"], ["Ikram", "212 6 22 74 40 50", "Tetouan", 240.0, "livree", "kimono bleu gean", "M", "2026-08-16 00:00:00"], ["Hamza", "212 6 48 93 33 35", "Sala Eljadida", 300.0, "livree", "kimono le lin", "L", "2026-09-18 00:00:00"], ["iman rezzouk", "212 6 19 64 36 86", "Casablanca", 240.0, "livree", "kimono noir transparent", "XL", "2026-08-18 00:00:00"], ["Client Inconnu", "212 7 12 54 40 73", "Tanger", 240.0, "livree", "kimono creie noir", "M", "2026-08-18 00:00:00"], ["ibrahim", "212 6 53 16 25 08", "Marrakech", 240.0, "livree", "kimono crepe noir", "XL", "2026-08-18 00:00:00"], ["hala elbahja", "212 7 09 11 18 38", "Casablanca", 380.0, "livree", "abaya 2 pièces zoom nœud", "XL", "2026-08-19 00:00:00"], ["Abir misbah", "212 6 32 33 86 34", "Casablanca", 240.0, "livree", "kimono transparent noir", "XXL", "2026-08-20 00:00:00"], ["Khalid", "212 6 61 99 32 88", "Tetouan", 620.0, "livree", "abaya zoom move+kimono move", "M", "2026-08-20 00:00:00"], ["Karima mohsin", "212 6 32 30 56 92", "Dakhla Oued Dahab", 240.0, "livree", "kimono crepe noir", "XL", "2026-08-24 00:00:00"], ["bouchra", "212 6 16 03 17 55", "Casablanca", 400.0, "livree", "abaya 2 pièces bleu pétrole", "XL", "2026-08-26 00:00:00"], ["iman", "212 6 36 49 20 05", "Fes", 240.0, "livree", "kimono crepe noir", "L", "2026-08-26 00:00:00"], ["Bouchra", "212 6 16 03 17 55", "Casablanca", 400.0, "livree", "abaya 2 pièces mauve", "XL", "2026-08-28 00:00:00"], ["niima khaled", "212 6 19 92 78 04", "Casablanca", 240.0, "livree", "kimono pleu pétrole", "S", "2026-08-29 00:00:00"], ["salma lmahdi", "212 6 04 68 48 49", "Saidia", 400.0, "annulee", "abaya 2 pièces noir", "M", "2026-08-30 00:00:00"], ["meriem", "212 6 78 75 79 23", "Inzegan", 350.0, "livree", "ensemble le lin bleu ciel", "M", "2026-08-31 00:00:00"], ["niima", "212 6 19 92 78 04", "Casablanca", 520.0, "livree", "abaya zigzag vert", "S", "2026-09-07 00:00:00"], ["meryem bouyzouran", "212 629 51 70 52", "Casablanca", 380.0, "annulee", "abaya zoum marron", "M", "2026-09-07 00:00:00"], ["Aya khabane", "212 6 76 11 16 59", "Casablanca", 400.0, "livree", "abaya 2 pièces bleu pétrole", "S", "2026-09-10 00:00:00"], ["hiba", "212 7 62 20 43 31", "Tanger", 560.0, "livree", "kimono le lin+mkharbaq", "L", "2026-09-10 00:00:00"], ["sanae", "212 6 07 84 26 08", "Fkih Ben Salah", 240.0, "livree", "kimono noir", "M", "2026-09-11 00:00:00"], ["Nacima", "212 6 54 23 22 01", "Oujda", 350.0, "livree", "ensemble le lin noir", "M", "2026-09-11 00:00:00"], ["farah elmaimouni", "212 6 00 39 18 28", "Ouazzane", 350.0, "livree", "ensemble le lin rose bb", "M", "2026-09-12 00:00:00"], ["zakia", "212 6 98 77 87 68", "Mouhemmadia", 350.0, "livree", "ensemble crepe marron", "L", "2026-09-12 00:00:00"], ["meryem", "212 6 13 33 64 70", "Casablanca", 350.0, "annulee", "ensemble le lin marron", "XL", "2026-09-13 00:00:00"], ["Hajar", "212 6 60 61 64 47", "Casablanca", 1010.0, "livree", "ensemble le lin(marron.jaune.ciel),zig(vert.petrol)", "XL", "2026-09-16 00:00:00"], ["Mariem", "212 7 23 42 77 51", "Rabat", 270.0, "livree", "kimono noir(abaya)", "XL", "2026-09-16 00:00:00"], ["sabrin fariji", "212 6 61 33 09 76", "Sale", 520.0, "livree", "abaya zigzag marron", "L", "2026-09-18 00:00:00"], ["nawal berrada", "212 6 61 41 61 70", "Casablanca", 900.0, "livree", "3 abayas koria move+marron+petrole", "S", "2026-09-19 00:00:00"], ["douae el yemlahi", "212 7 05 69 41 19", "Rabat", 270.0, "annulee", "scuba noir", "XL", "2026-09-20 00:00:00"], ["safae", "212 6 77 14 43 71", "Sala Aljadida", 400.0, "livree", "abaya 2 pièces marron", "XL", "2026-09-23 00:00:00"], ["nour laabar", "212 6 16 84 98 98", "Ifran", 400.0, "livree", "Abaya 2 pièces marron", "M", "2026-09-22 00:00:00"], ["youssra", "212 6 79 85 49", "Tanger", 520.0, "livree", "Abaya zigzag marron claire", "L", "2026-09-23 00:00:00"], ["Hiba", "212 6 96 92 69 08", "Boujdor", 350.0, "retournee", "ensemble le lin fushia", "XXL", "2026-09-25 00:00:00"], ["Assia", "212 6 54 71 64 93", "Agadir", 350.0, "livree", "Abaya dentelle noir", "XL", "2026-09-25 00:00:00"], ["karima", "212 6 32 30 56 92", "Dakhla Oued Dahab", 0.0, "livree", "kimono mkharbaq +ensemble crepe marron", "XL", "2026-09-27 00:00:00"], ["oumayma", "212 6 21 98 12 08", "Salé", 640.0, "annulee", "koria vert kaki+Marron", "XXL/L", "2026-09-29 00:00:00"], ["Meryem mouhmouh", "212 6 54 42 60 03", "Agadir", 280.0, "annulee", "kimono noir mcharet", "M", "2026-10-04 00:00:00"], ["fatimazzahra", "212 6 91 71 39 12", "Marrakech", 400.0, "annulee", "Abaya 2 pièces move claire", "XL", "2026-10-06 00:00:00"], ["Abir", "212 6 34 88 94 05", "Agadir", 350.0, "livree", "ensemble le lin marron", "XXL", "2026-10-07 00:00:00"], ["meriem", "212 7 23 42 77 51", "Rabat", 550.0, "livree", "kimono marron+noir mcharet", "XL", "2026-10-15 00:00:00"], ["ilham", "212 6 61 26 40 02", "Tit Pellil", 1200.0, "livree", "2 abaya 2 pièces noir+abaya bleu petrol", "S", "01/11/2026"], ["dounia badaoui", "212 7 07 01 37 55", "Nador", 400.0, "retournee", "abaya 2 pièces noir", "L", "2026-10-21 00:00:00"], ["hafsa laamrani", "212 7 81 67 30 05", "Marrakech", 400.0, "livree", "abaya 2 pièces bleu pétrole", "M", "2026-10-21 00:00:00"], ["hanaa", "212 6 95 02 88 08", "Casablanca", 400.0, "livree", "abaya 2 pièces bleu pétrole", "XXL", "2026-10-22 00:00:00"], ["meryem jaloul", "212 6 17 93 46 88", "Marrakech", 320.0, "livree", "abaya koria marron", "XL", "2026-10-22 00:00:00"], ["Mina", "212 6 22 22 77 74", "Dakhla", 350.0, "livree", "abaya dentelle mauve 1.55", "S", "2026-10-23 00:00:00"], ["Hajar", "212 6 39 55 99 09", "Larach", 400.0, "livree", "abaya 2 pièces mauve fonçait", "XXL", "2026-10-24 00:00:00"], ["Mme nadia", "212 6 74 31 55 87", "Rabat", 520.0, "livree", "abaya zigzag pleu pétrole", "XXL", "2026-10-25 00:00:00"], ["chaimaa", "212 6 39 46 14 11", "Meknès", 400.0, "livree", "abaya 2 pièces kaki", "XXL", "2026-10-25 00:00:00"], ["nouhaila nadri", "212 6 90 20 34 01", "Mouhemmadia", 260.0, "livree", "kimono mcharet", "XL", "2026-10-28 00:00:00"], ["najlae", "212 6 33 58 4696", "Tanger", 390.0, "processing", "sous abaya crepe +kimono mcharet noir", "S", "2026-10-31 00:00:00"], ["Asma", "212 6 66 09 09 00", "Casablanca", 600.0, "processing", "2 kimono manteau (noir/gris)", "XL", "2026-11-01 00:00:00"], ["fatima", "212 6 44 66 06 15", "Marrakech", 300.0, "processing", "kimono manteau gris", "XXL", "2026-11-01 00:00:00"], ["elmaadioui mohamed", "212 6 55 67 83 04", "Imzouren", 600.0, "processing", "2 kimono manteau (noir/gris)", "L", "2026-11-01 00:00:00"], ["Mounia yemlahi", "", "Inconnue", 0.0, "processing", "", "", "01/11/2026"]];
 
     let orders = [];
+    let editingOrderId = null;
+    let orderToDeleteId = null;
+    let userId = null;
+    let unsubscribeSnapshot = null;
+
+    // Firebase Setup
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     // --- 2. INITIALIZATION & LOGIC ---
-    function init() {
-      // Check if data is already initialized in localStorage
-      const savedOrders = localStorage.getItem('byAbayaOrders');
-      if (savedOrders) {
-        orders = JSON.parse(savedOrders);
-      } else {
-        // First load: Parse the raw array
-        orders = initialRawData.map(arr => {
-          let v = (arr[3] || "Inconnu").toLowerCase();
-          v = v.charAt(0).toUpperCase() + v.slice(1);
-          return {
-            id: arr[0],
-            nom: arr[1],
-            tel: arr[2],
-            ville: v,
-            prix: Number(arr[4]),
-            statut: arr[5], // 'en_cours', 'livree', 'annulee', 'retournee'
-            produit: arr[6],
-            date: arr[7]
-          };
-        });
-        saveOrders();
+    async function init() {
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+            await signInAnonymously(auth);
+        }
+        if (auth.currentUser) {
+            userId = auth.currentUser.uid;
+            await checkAndSeed();
+            initRealtimeSync();
+        }
+      } catch (e) {
+        console.error("Auth error", e);
       }
-      
-      document.getElementById('notifBadge').textContent = orders.filter(o => o.statut === 'en_cours').length;
-      renderAll();
     }
 
-    function saveOrders() {
-      localStorage.setItem('byAbayaOrders', JSON.stringify(orders));
+    async function checkAndSeed() {
+      const ordersRef = collection(db, 'artifacts', appId, 'users', userId, 'orders');
+      const snap = await getDocs(ordersRef);
+      if (snap.empty) {
+         const batch = writeBatch(db);
+         initialRawData.forEach(arr => {
+            const docRef = doc(ordersRef);
+            let ville = (arr[2] || "Inconnu").toLowerCase();
+            ville = ville.charAt(0).toUpperCase() + ville.slice(1);
+            
+            let statut = arr[4];
+            if (statut === 'processing') statut = 'en_cours';
+
+            batch.set(docRef, {
+              nom: arr[0],
+              tel: arr[1],
+              ville: ville,
+              prix: Number(arr[3]),
+              statut: statut,
+              produit: arr[5],
+              taille: arr[6],
+              date: arr[7]
+            });
+         });
+         await batch.commit();
+      }
+    }
+
+    function initRealtimeSync() {
+      const ordersRef = collection(db, 'artifacts', appId, 'users', userId, 'orders');
+      unsubscribeSnapshot = onSnapshot(ordersRef, (snapshot) => {
+         orders = [];
+         snapshot.forEach(docSnap => {
+            orders.push({ id: docSnap.id, ...docSnap.data() });
+         });
+         
+         // Reverse to keep newer entries visually on top 
+         orders.reverse();
+         
+         document.getElementById('notifBadge').textContent = orders.filter(o => o.statut === 'en_cours').length;
+         renderAll();
+      }, (error) => {
+         console.error("Snapshot sync error:", error);
+      });
     }
 
     // TAB SWITCHING
@@ -548,7 +623,7 @@
       // Recent 5
       const recentContainer = document.getElementById('recentOrdersList');
       recentContainer.innerHTML = '';
-      const recent = [...orders].reverse().slice(0, 5);
+      const recent = [...orders].slice(0, 5); // Already reversed
       recent.forEach(o => {
         let badge = getStatusBadge(o.statut);
         recentContainer.innerHTML += `
@@ -566,20 +641,12 @@
       });
     }
 
-    // EDIT STATUS FUNCTION
-    window.updateOrderStatus = function(orderId, newStatus) {
-      const order = orders.find(o => o.id === orderId);
-      if(order) {
-        order.statut = newStatus;
-        saveOrders();
-        
-        // Update Notif Badge
-        document.getElementById('notifBadge').textContent = orders.filter(o => o.statut === 'en_cours').length;
-        
-        // Re-render everything to update colors and stats dynamically
-        renderAll();
-      }
-    };
+    // EDIT STATUS FUNCTION (Firestore)
+    async function updateOrderStatus(orderId, newStatus) {
+      if(!userId) return;
+      const docRef = doc(db, 'artifacts', appId, 'users', userId, 'orders', orderId);
+      await updateDoc(docRef, { statut: newStatus });
+    }
 
     // COMMANDES (Searchable List)
     function renderOrdersList() {
@@ -587,10 +654,10 @@
       const container = document.getElementById('allOrdersContainer');
       container.innerHTML = '';
 
-      const filtered = orders.slice().reverse().filter(o => 
-        o.nom.toLowerCase().includes(q) || 
-        o.tel.toLowerCase().includes(q) ||
-        o.ville.toLowerCase().includes(q)
+      const filtered = orders.filter(o => 
+        (o.nom || '').toLowerCase().includes(q) || 
+        (o.tel || '').toLowerCase().includes(q) ||
+        (o.ville || '').toLowerCase().includes(q)
       );
 
       if(filtered.length === 0) {
@@ -624,7 +691,17 @@
                   <p class="text-xs font-bold text-gray-800 line-clamp-1">${o.produit} <span class="text-gray-400 font-medium ml-1">(${o.taille || '-'})</span></p>
                   <p class="text-[11px] font-semibold text-gray-500">${o.ville}</p>
                 </div>
-                <p class="font-black text-app-greenDark text-lg shrink-0 pl-3">${o.prix} DH</p>
+                <div class="flex items-center gap-3 shrink-0 pl-3">
+                  <div class="flex gap-2">
+                    <button onclick="openEditModal('${o.id}')" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors">
+                      <i class="ph-bold ph-pencil text-sm"></i>
+                    </button>
+                    <button onclick="promptDeleteOrder('${o.id}')" class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition-colors">
+                      <i class="ph-bold ph-trash text-sm"></i>
+                    </button>
+                  </div>
+                  <p class="font-black text-app-greenDark text-lg">${o.prix} DH</p>
+                </div>
              </div>
           </div>
         `;
@@ -649,7 +726,6 @@
       container.innerHTML = '';
 
       sortedClients.forEach((c, idx) => {
-        // Initials logic
         let initials = "C";
         if(c.nom) {
           const parts = c.nom.trim().split(' ');
@@ -697,50 +773,91 @@
         modal.classList.remove('hidden');
       } else {
         modal.classList.add('hidden');
+        if(id === 'orderModal') {
+           editingOrderId = null;
+           document.getElementById('modalTitle').textContent = "Nouvelle Commande";
+           document.getElementById('submitBtnText').textContent = "Enregistrer";
+           document.getElementById('addOrderForm').reset();
+           document.querySelector(`input[name="f_statut"][value="en_cours"]`).checked = true;
+        }
       }
     }
 
-    // ADD NEW ORDER SUBMISSION
-    function submitOrder() {
+    // ACTIONS: EDIT & DELETE
+    function openEditModal(id) {
+       const o = orders.find(ord => ord.id === id);
+       if(!o) return;
+       
+       editingOrderId = id;
+       
+       document.getElementById('modalTitle').textContent = "Modifier la commande";
+       document.getElementById('submitBtnText').textContent = "Mettre à jour";
+       
+       document.getElementById('f_nom').value = o.nom || '';
+       document.getElementById('f_tel').value = o.tel || '';
+       document.getElementById('f_ville').value = o.ville || '';
+       document.getElementById('f_produit').value = o.produit || '';
+       document.getElementById('f_taille').value = o.taille || 'Standard';
+       document.getElementById('f_prix').value = o.prix || 0;
+       
+       const radio = document.querySelector(`input[name="f_statut"][value="${o.statut}"]`);
+       if(radio) radio.checked = true;
+       
+       toggleModal('orderModal', true);
+    }
+
+    function promptDeleteOrder(id) {
+       orderToDeleteId = id;
+       toggleModal('deleteModal', true);
+    }
+
+    async function confirmDeleteOrder() {
+       if(!orderToDeleteId || !userId) return;
+       const docRef = doc(db, 'artifacts', appId, 'users', userId, 'orders', orderToDeleteId);
+       await deleteDoc(docRef);
+       toggleModal('deleteModal', false);
+       orderToDeleteId = null;
+    }
+
+    // ADD / UPDATE ORDER SUBMISSION (Firestore)
+    async function submitOrder() {
       const form = document.getElementById('addOrderForm');
       if(!form.checkValidity()) {
         form.reportValidity();
         return;
       }
 
+      if(!userId) return;
+
       const today = new Date();
       const dd = String(today.getDate()).padStart(2, '0');
       const mm = String(today.getMonth() + 1).padStart(2, '0');
       
       const selectedStatus = document.querySelector('input[name="f_statut"]:checked').value;
+      let ville = document.getElementById('f_ville').value;
+      ville = ville.charAt(0).toUpperCase() + ville.slice(1).toLowerCase();
 
-      const newOrder = {
-        id: "ORD-" + Math.floor(Math.random() * 100000),
+      const orderData = {
         nom: document.getElementById('f_nom').value,
         tel: document.getElementById('f_tel').value,
-        ville: document.getElementById('f_ville').value,
+        ville: ville,
         produit: document.getElementById('f_produit').value,
         taille: document.getElementById('f_taille').value,
         prix: Number(document.getElementById('f_prix').value),
         statut: selectedStatus,
-        date: `${dd}/${mm}`
+        date: editingOrderId ? orders.find(o => o.id === editingOrderId)?.date : `${dd}/${mm}/${today.getFullYear()}`
       };
 
-      // Ensure city is capitalized for normalization
-      newOrder.ville = newOrder.ville.charAt(0).toUpperCase() + newOrder.ville.slice(1).toLowerCase();
+      if (editingOrderId) {
+        const docRef = doc(db, 'artifacts', appId, 'users', userId, 'orders', editingOrderId);
+        await updateDoc(docRef, orderData);
+      } else {
+        const ordersRef = collection(db, 'artifacts', appId, 'users', userId, 'orders');
+        await addDoc(ordersRef, orderData);
+        switchTab('orders');
+      }
 
-      orders.push(newOrder); 
-      saveOrders();
-      renderAll();
-      
-      // Update Notif Badge
-      document.getElementById('notifBadge').textContent = orders.filter(o => o.statut === 'en_cours').length;
-      
-      form.reset();
       toggleModal('orderModal', false);
-      
-      // Auto-switch to orders tab so she sees it was added
-      switchTab('orders');
     }
 
     // Start App
