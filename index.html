@@ -393,6 +393,10 @@
             </div>
           </div>
           <div>
+            <label class="block font-bold text-gray-700 ml-1 mb-2">Adresse détaillée</label>
+            <input type="text" id="f_adresse" class="input-mom" placeholder="Ex: Hay Salam, Rue 4...">
+          </div>
+          <div>
             <label class="block font-bold text-gray-700 ml-1 mb-2">Nom de l'abaya</label>
             <input type="text" id="f_produit" required class="input-mom" placeholder="Ex: Abaya Zoom Noir">
           </div>
@@ -682,7 +686,7 @@
              <div class="flex justify-between items-end border-t border-gray-50 pt-3">
                 <div>
                   <p class="text-xs font-bold text-gray-800 line-clamp-1">${o.produit} <span class="text-gray-400 font-medium ml-1">(${o.taille || '-'})</span></p>
-                  <p class="text-[11px] font-semibold text-gray-500">${o.ville}</p>
+                  <p class="text-[11px] font-semibold text-gray-500">${o.ville} ${o.adresse ? "• " + o.adresse : ""}</p>
                 </div>
                 <p class="font-black text-app-greenDark text-lg shrink-0 pl-3">${o.prix} DH</p>
              </div>
@@ -813,6 +817,7 @@
       document.getElementById('f_nom').value = order.nom || '';
       document.getElementById('f_tel').value = order.tel || '';
       document.getElementById('f_ville').value = order.ville || '';
+      document.getElementById('f_adresse').value = order.adresse || '';
       document.getElementById('f_produit').value = order.produit || '';
       document.getElementById('f_taille').value = order.taille || 'Standard';
       document.getElementById('f_prix').value = order.prix || 0;
@@ -839,6 +844,7 @@
         nom: document.getElementById('f_nom').value,
         tel: document.getElementById('f_tel').value,
         ville: v,
+        adresse: document.getElementById('f_adresse').value.trim(),
         produit: document.getElementById('f_produit').value,
         taille: document.getElementById('f_taille').value,
         prix: Number(document.getElementById('f_prix').value),
